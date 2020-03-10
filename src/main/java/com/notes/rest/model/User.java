@@ -1,9 +1,8 @@
 package com.notes.rest.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
@@ -11,12 +10,17 @@ import java.util.Objects;
 public class User {
     private int userId;
     private String username;
-    private Date dateOfBirth;
-    private String name;
-    private String surname;
+
+    public User() {
+    }
+     public User(int id, String username){
+        this.userId = id;
+        this.username = username;
+    }
 
     @Id
     @Column(name = "user_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getUserId() {
         return userId;
     }
@@ -27,6 +31,7 @@ public class User {
 
     @Basic
     @Column(name = "username", nullable = false, length = 20)
+    @Length(max = 25, message = "Username must be under 20 characters" )
     public String getUsername() {
         return username;
     }
@@ -35,50 +40,17 @@ public class User {
         this.username = username;
     }
 
-    @Basic
-    @Column(name = "date_of_birth", nullable = true)
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    @Basic
-    @Column(name = "name", nullable = true, length = 25)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Basic
-    @Column(name = "surname", nullable = true, length = 25)
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return userId == user.userId &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(dateOfBirth, user.dateOfBirth) &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(surname, user.surname);
+        return getUserId() == user.getUserId() &&
+                Objects.equals(getUsername(), user.getUsername());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, dateOfBirth, name, surname);
+        return Objects.hash(getUserId(), getUsername());
     }
 }
