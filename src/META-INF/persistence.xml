@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="persistenceUnit">
+        <class>com.notes.rest.model.Note</class>
+        <class>com.notes.rest.model.User</class>
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:mysql://172.17.0.2:3306/notes"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+        </properties>
+    </persistence-unit>
+</persistence>
