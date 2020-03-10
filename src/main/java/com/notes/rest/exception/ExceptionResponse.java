@@ -1,4 +1,4 @@
-package com.notes.rest.model;
+package com.notes.rest.exception;
 
 import java.util.Date;
 

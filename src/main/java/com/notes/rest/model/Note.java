@@ -1,9 +1,8 @@
 package com.notes.rest.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +13,7 @@ public class Note {
 
     @Id
     @Column(name = "note_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getNoteId() {
         return noteId;
     }
@@ -23,7 +23,8 @@ public class Note {
     }
 
     @Basic
-    @Column(name = "title", nullable = true, length = 30)
+    @Column(name = "title", length = 30)
+    @Length(max = 30, message = "Title must be less than 30 characters")
     public String getTitle() {
         return title;
     }
@@ -33,7 +34,8 @@ public class Note {
     }
 
     @Basic
-    @Column(name = "text", nullable = true, length = 50)
+    @Column(name = "text", length = 50)
+    @Length(max= 50, message = "Text must be less then 50 characters")
     public String getText() {
         return text;
     }
