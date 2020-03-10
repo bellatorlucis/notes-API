@@ -10,6 +10,7 @@ public class Note {
     private int noteId;
     private String title;
     private String text;
+    private User user;
 
     @Id
     @Column(name = "note_id", nullable = false)
@@ -42,6 +43,16 @@ public class Note {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

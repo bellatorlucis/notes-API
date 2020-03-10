@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.test.web.servlet.ResultActions;
 
+import javax.swing.text.html.Option;
 import java.net.http.HttpHeaders;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class UserControllerTests {
 
 
     @Test
-    public void getUserWithIdCorrectResponse() throws Exception{
+    public void findUserWihtId_CorrectDataGiven_Success() throws Exception{
         User user = new User(1, "petar");
         given(userService.findUserById(user.getUserId())).willReturn(Optional.of(user));
 
@@ -48,17 +49,25 @@ public class UserControllerTests {
     }
 
     @Test
-    public void getUSerWithIdThadDoesNotExistReturnsError() throws Exception{
+    public void findUserWithId_NonExistentId_ReturnNotFoundStatusCode() throws Exception{
         User user = new User(1, "Petar");
         given(userService.findUserById(user.getUserId())).willReturn(Optional.empty());
 
-        mockMvc.perform(get(USERS_PATH + "/" + user.getUserId())
+        mockMvc.perform(get(BASE_PATH + USERS_PATH + "/" + user.getUserId())
                 .contentType(MediaTypes.HAL_JSON))
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void  findUserWithId_StringAsInput_BadRequestStatusCode() throws Exception{
+        User user = new User (3,"MArko");
+        given(userService.findUserById(user.getUserId())).willReturn(Optional.empty());
 
+        mockMvc.perform(get(BASE_PATH + USERS_PATH +"/" + "jsadiasd")
+                .contentType(MediaTypes.HAL_JSON))
+                .andExpect(status().isBadRequest());
 
+    }
 
 
 }

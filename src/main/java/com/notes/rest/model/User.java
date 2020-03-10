@@ -4,12 +4,15 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class User {
     private int userId;
     private String username;
+    private List<Note> notes;
 
     public User() {
     }
@@ -38,6 +41,20 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @OneToMany(mappedBy = "user",  fetch =  FetchType.LAZY,orphanRemoval = true)
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
+
+    public void addNote(Note note){
+        notes.add(note);
+        note.setUser(this);
     }
 
     @Override
