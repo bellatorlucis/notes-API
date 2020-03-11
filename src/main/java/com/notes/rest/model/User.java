@@ -1,5 +1,6 @@
 package com.notes.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -43,7 +44,8 @@ public class User {
         this.username = username;
     }
 
-    @OneToMany(mappedBy = "user",  fetch =  FetchType.LAZY,orphanRemoval = true)
+    @OneToMany(mappedBy = "user",  fetch =  FetchType.LAZY)
+    @JsonBackReference
     public List<Note> getNotes() {
         return notes;
     }
@@ -52,22 +54,18 @@ public class User {
         this.notes = notes;
     }
 
-    public void addNote(Note note){
-        notes.add(note);
-        note.setUser(this);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return getUserId() == user.getUserId() &&
-                Objects.equals(getUsername(), user.getUsername());
+                Objects.equals(getUsername(), user.getUsername()) &&
+                Objects.equals(getNotes(), user.getNotes());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserId(), getUsername());
+        return Objects.hash(getUserId(), getUsername(), getNotes());
     }
 }

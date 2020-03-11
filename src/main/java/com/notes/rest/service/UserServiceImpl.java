@@ -1,17 +1,13 @@
 package com.notes.rest.service;
 
 import com.notes.rest.exception.UserAlreadyExistsException;
-import com.notes.rest.exception.UserNotFoundException;
 import com.notes.rest.model.User;
 import com.notes.rest.repository.UserJpaRepository;
+import com.notes.rest.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.swing.event.ListDataListener;
-
-import static java.util.Optional.ofNullable;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -31,6 +27,10 @@ public class UserServiceImpl implements UserService {
 
     public Optional<User> findUserById(int id){
         return userJpaRepository.findById(id);
+    }
+
+    public Optional<User> findUserBydAndAllNotes(int id){
+        return userJpaRepository.findAllNotesWithUserId(id);
     }
 
     @Autowired

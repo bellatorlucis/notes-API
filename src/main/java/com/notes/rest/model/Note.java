@@ -1,5 +1,6 @@
 package com.notes.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -47,6 +48,7 @@ public class Note {
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
+    @JsonManagedReference
     public User getUser() {
         return user;
     }
