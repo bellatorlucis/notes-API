@@ -2,22 +2,23 @@ package com.notes.rest.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
+import ch.qos.logback.core.db.dialect.SybaseSqlAnywhereDialect;
 import com.notes.rest.exception.UserNotFoundException;
+import com.notes.rest.model.Note;
 import com.notes.rest.model.User;
-import com.notes.rest.service.UserService;
-import com.notes.rest.service.UserServiceImpl;
+import com.notes.rest.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequestMapping("/users")
@@ -66,6 +67,23 @@ public class UserController {
                                 .map(ResponseEntity::ok)
                                 .orElseThrow(() -> new UserNotFoundException("No user with id " + id));
 
+    }
+
+    @GetMapping("/{id}/notes")
+    public ResponseEntity<CollectionModel<EntityModel<Note>>> getAllNotesOfUser( @PathVariable int id){
+        List<EntityModel<Note>> notes = userService.findUserBydAndAllNotes(id)
+                                                                    .orElseThrow(() -> new UserNotFoundException("No user wtih id : " + id))
+                                                                    .getNotes()
+                                                                    .stream()
+                                                                    .map(note -> new EntityModel<>(
+                                                                            note,
+                                                                            linkTo(methodOn(NoteController.class).findNoteWithId(note.getNoteId())).withSelfRel()))
+                                                                    .collect(Collectors.toList());
+        return  ResponseEntity.ok(
+                new CollectionModel<>(
+                        notes,
+                        linkTo(methodOn(UserController.class).getAllNotesOfUser(id)).withSelfRel()
+                ));
     }
 
     @Autowired

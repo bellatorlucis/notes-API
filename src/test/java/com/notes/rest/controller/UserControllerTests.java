@@ -1,16 +1,13 @@
 package com.notes.rest.controller;
 
 import com.notes.rest.model.User;
-import com.notes.rest.service.UserService;
-import jdk.jfr.ContentType;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
+import com.notes.rest.service.api.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import static java.util.Collections.singletonList;
+
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
@@ -18,10 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.springframework.hateoas.MediaTypes;
-import org.springframework.test.web.servlet.ResultActions;
 
-import javax.swing.text.html.Option;
-import java.net.http.HttpHeaders;
 import java.util.Optional;
 
 
